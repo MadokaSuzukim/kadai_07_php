@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>アンケート結果</title>
+    <link rel="stylesheet" href="index.css">
+    <style>
+        /* 全体のコンテナを中央揃えにします */
+        h1 {
+          text-align: center; /* テキストを中央揃えにする */
+          margin: auto; /* 自動的に余白を調整して中央に配置 */
+          width: 50%; /* 必要に応じて幅を調整してください */
+        }
+        
+        /* ボタンも中央に揃えたい場合、テキスト揃えだけでは不足する場合があります */
+        button {
+          display: block; /* ブロック要素として表示 */
+          margin: 0 auto; /* 上下のマージンは0、左右のマージンは自動で中央揃え */
+        }
+      </style>
+</head>
+<body>
+    <!-- グラフを表示するCanvas要素 -->
+    <canvas id="myChart" width="400" height="400"></canvas>
+
+    <!-- フォーム -->
+    <form action="chart.php" method="post">
+        <!-- ここにフォームの内容を記述 -->
+        <h1>アンケート結果</h1>
+        <button type="submit">グラフを表示</button>
+    </form>
+
+    <script>
+        // chart_data.phpからJSONデータを取得
+        fetch('chart.php')
+            .then(response => response.json())
+            .then(graphData => {
+                // グラフを描画する処理
+                var chartData = {};
+                Object.keys(graphData).forEach(function(question) {
+                    chartData[question] = [];
+                    Object.keys(graphData[question]).forEach(function(response) {
+                        chartData[question].push({
+                            label: response,
+                            data: graphData[question][response],
+                            backgroundColor: getRandomColor(), // 色をランダムに設定
+                        });
+                    });
+                });
+
+                // グラフを描画
+                var ctx = document.getElementById('myChart').getContext('2d');
+                var myChart = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        datasets: chartData, // 初めに表示する質問の回答を設定
+                    },
+                    options: {
+                        responsive: true,
+                    }
+                });
+
+                // ランダムな色を生成する関数
+                function getRandomColor() {
+                    var letters = '0123456789ABCDEF';
+                    var color = '#';
+                    for (var i = 0; i < 6; i++) {
+                        color += letters[Math.floor(Math.random() * 16)];
+                    }
+                    return color;
+                }
+            })
+            .catch(error => console.error('Error fetching data:', error));
+    </script>
+</body>
+</html>
