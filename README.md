@@ -6,6 +6,7 @@
 
 ## ③DEMO
 http://marumark.jp/kadai_07_php/
+アンケート送信後の画面：https://marumark.jp/kadai_07_php/thanks.html
 ## ④工夫した点・こだわった点
 -
 -
