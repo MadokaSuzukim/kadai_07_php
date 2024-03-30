@@ -13,7 +13,6 @@ $check_times  = isset($_POST['check_times']) ? implode(', ', $_POST['check_times
 // <!-- 自己評価機能に関する質問 -->
 $self_evaluation_improvement = $_POST['self_evaluation_improvement'] ?? '未回答'; // 自己評価機能に関する質問
 $self_recognition_change = $_POST['self_recognition_change'] ?? '未回答';
-$additional_features = $_POST['additional_features'] ?? '未回答';
 
 // 通知機能の効果に関する質問
 $behavior_change_after_notification = $_POST['behavior_change_after_notification'] ?? '未回答'; // 通知機能の効果に関する質問
@@ -42,6 +41,7 @@ $feedback_provision_condition = $_POST['feedback_provision_condition'] ?? '未�
 // 全体的な満足度に関する質問
 $recommendation_likelihood = $_POST['recommendation_likelihood'] ?? '未回答';
 $continued_usage_desire = $_POST['continued_usage_desire'] ?? '未回答';
+$additional_features = $_POST['additional_features'] ?? '未回答';
 $usability = $_POST['usability'] ?? '未回答';
 $improvement_suggestions = $_POST['improvement_suggestions'] ?? '未回答';
 $difficulty_reasons = $_POST['difficulty_reasons'] ?? '未回答';
@@ -63,12 +63,10 @@ if (!$file) {
 $data = [
     date('Y-m-d H:i:s'), // 現在の日時を追加
     $frequency,
-    $more_records,
-    // $desired_records,
     $check_times,
+    $more_records,
     $self_evaluation_improvement,
     $self_recognition_change,
-    $additional_features,
     $behavior_change_after_notification,
     $notification_reflect_current_state,
     $end_of_day_notification,
@@ -78,16 +76,15 @@ $data = [
     $data_handling_concerns,
     $need_for_educational_content,
     $mental_health_info_desire,
-    // $sos_function_effectiveness,
     $mail_link_received,
     $reason_for_not_clicking_link,
     $preference_for_chat_over_mail,
     $feedback_provision_condition,
     $recommendation_likelihood,
     $continued_usage_desire,
+    $additional_features,
     $usability,
     $improvement_suggestions,
-    $difficulty_reasons,
     $integration_ease,
     $desire_for_sharing_feature,
     $desire_for_specific_sharing_option,

@@ -146,20 +146,19 @@ function validateForm() {
         <option value="rarely">ほとんど使用しない</option>
     </select>
     <!-- 質問２ -->
-    <!-- ラジオボタン -->
-    <p>1日の回数上限がありましたが、それ以上に記録が残ったほうが良いか？</p>
-    <input type="radio" name="more_records" value="yes" required> はい
-    <input type="radio" name="more_records" value="no" required> いいえ
-    <input type="radio" name="more_records" value="yes"> はい
-    <input type="radio" name="more_records" value="no"> いいえ
-
-    <!-- 質問３ -->
     <!-- チェックボックス -->
-    <p>チェックをする時間帯（複数選択可）</p>
+    <p>チェックを行った時間帯を教えてください（複数選択可）</p>
     <input type="checkbox" name="check_times[]" value="morning"> 起床時
     <input type="checkbox" name="check_times[]" value="before_work"> 終業前
     <input type="checkbox" name="check_times[]" value="after_work"> 終業後
     <input type="checkbox" name="check_times[]" value="before_bed"> 就寝前
+
+    <!-- 質問３ -->
+    <!-- ラジオボタン -->
+    <p>1日の回数上限がありましたが、それ以上に記録が残ったほうが良いか？</p>
+    <input type="radio" name="more_records" value="yes" required> はい
+    <input type="radio" name="more_records" value="no" required> いいえ
+
 
     <!-- 自己評価機能に関する質問 -->
     <h2>自己評価機能に関する質問</h2>
@@ -171,8 +170,7 @@ function validateForm() {
     <input type="radio" name="self_recognition_change" value="yes"required> はい
     <input type="radio" name="self_recognition_change" value="no"required> いいえ
 
-    <p>他にどのような機能があったらより自分の心の状態を知ることができますか？</p>
-    <textarea name="additional_features"></textarea>
+  
 
 <!-- 通知機能の効果に関する質問 -->
 <h2>通知機能の効果に関する質問</h2>
@@ -251,14 +249,21 @@ function validateForm() {
 <!-- <input type="radio" name="continued_usage_desire" value="if_improved"> 改善されたらしたい -->
 
 <!-- 質問 -->
-<p>ツールの使用感はいかがですか？（使いやすさ、インターフェイスの理解しやすさなど）</p>
-<textarea name="usability"></textarea>
+<p>スタンプは一つしか選べれないようになっていますが、いくつか選べられるようになっていたほうが嬉しいですか？</p>
 
-<p>このツールの改善点について具体的な提案はありますか？</p>
-<textarea name="improvement_suggestions"></textarea>
+<input type="radio" name="additional_features" value="yes"> はい
+<input type="radio" name="additional_features" value="no"> いいえ    
 
-<p>利用しにくい理由は何ですか？</p>
-<textarea name="difficulty_reasons"></textarea>
+<p>自分の今の心の調子を表すスタンプはありましたか？</p>
+<input type="radio" name="usability" value="yes" required> はい
+<input type="radio" name="usability" value="no" required> いいえ
+
+<p>アプリの中になかったスタンプであったら嬉しいスタンプはありますか？</p>
+<input type="radio" name="improvement_suggestions" value="yes" required> はい
+<input type="radio" name="improvement_suggestions" value="no" required> いいえ
+
+<!-- <p>利用しにくい理由は何ですか？</p>
+<textarea name="difficulty_reasons"></textarea> -->
 
 <p>会社のシステムと連動していたら取り組みやすいか？</p>
 <input type="radio" name="integration_ease" value="yes"required> はい

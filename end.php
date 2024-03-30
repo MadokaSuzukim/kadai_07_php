@@ -57,41 +57,43 @@
             }
         });
     </script>
-    <script>
-// PHPから受け取ったデータを使用
-var dataCounts = <?php echo $jsonData; ?>;
+<!-- 各質問ごとにグラフを表示するためのコンテナ -->
+<div id="chartsContainer"></div>
+<script>
+var questionAnswers = <?php echo $jsonData?>
 
-// ラベルとデータ値を抽出
-var labels = Object.keys(dataCounts);
-var data = labels.map(label => dataCounts[label]);
+Object.keys(questionAnswers).forEach(function(questionIndex) {
+    var answers = questionAnswers[questionIndex];
 
-// Chart.jsで円グラフを描画
-var ctx = document.getElementById('myChart').getContext('2d');
-var myChart = new Chart(ctx, {
-    type: 'pie',
-    data: {
-        labels: labels,
-        datasets: [{
-            data: data,
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)'
-            ],
-            borderColor: [
-                'rgba(255,99,132,1)',
-                'rgba(54, 162, 235, 1)'
-            ],
-            borderWidth: 1
-        }]
-    },
-    options: {
-        responsive: true,
-    }
+    // グラフを描画するためのcanvas要素を動的に生成
+    var canvas = document.createElement('canvas');
+    canvas.id = 'chart' + questionIndex;
+    document.getElementById('chartsContainer').appendChild(canvas);
+
+    // Chart.jsでグラフを描画
+    var ctx = canvas.getContext('2d');
+    new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: ['Yes', 'No'],
+            datasets: [{
+                data: [answers.yes, answers.no],
+                backgroundColor: ['rgba(54, 162, 235, 0.2)', 'rgba(255, 99, 132, 0.2)'],
+                borderColor: ['rgba(54, 162, 235, 1)', 'rgba(255, 99, 132, 1)'],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            title: {
+                display: true,
+                text: '質問 ' + questionIndex + ' の回答分布'
+            },
+            responsive: true,
+        }
+    });
 });
 </script>
-
-   
-</body>
+   </body>
 <?php
 // エラー表示を有効にします（開発中のみ推奨）
 ini_set('display_errors', 1);
@@ -108,17 +110,17 @@ if ($file === false) {
 // データをHTMLテーブルとして表示する準備
 echo "<table border='1'>";
 // テーブルのヘッダーを出力
-echo "<tr><th>日時</th><th>頻度</th><th>記録増加</th><th>チェック時間</th><th>自己評価の改善</th><th>自己認識の変化</th><th>追加機能</th><th>通知後の行動変化</th><th>通知の現状反映</th><th>一日の終わりの通知</th><th>行動観察の洞察</th><th>行動変化</th><th>プライバシーポリシーの理解</th><th>データ取り扱いへの懸念</th><th>教育コンテンツの必要性</th><th>メンタルヘルス情報の欲求</th><th>メールリンク受信</th><th>リンク未クリックの理由</th><th>メールよりチャットの好み</th><th>フィードバック条件</th><th>推薦意向</th><th>継続使用希望</th><th>使いやすさ</th><th>改善提案</th><th>利用しにくい理由</th><th>システム連携の容易さ</th><th>共有機能の利用希望</th><th>特定共有オプションの利用希望</th><th>Email</th></tr>";
-echo "<tr><th>check_times</th><th>frequency</th><th>more_record</th><th>check_times[]</th><th>sself_evaluation_improvement</th><th>self_recognition_change</th><th>additional_features</th><th>behavior_change_after_notification</th><th>notification_reflect_current_state</th><th>end_of_day_notification</th><th>behavior_observation_insights</th><th>actionable_changes</th><th>privacy_policy_understanding</th><th>data_handling_concerns</th><th>need_for_educational_content</th><th>mental_health_info_desire</th><th>
+echo "<tr><th>日時</th><th>頻度</th><th>チェック時間</th><th>記録増加</th><th>自己評価の改善</th><th>自己認識の変化</th><><th>通知後の行動変化</th><th>通知の現状反映</th><th>一日の終わりの通知</th><th>行動観察の洞察</th><th>行動変化</th><th>プライバシーポリシーの理解</th><th>データ取り扱いへの懸念</th><th>教育コンテンツの必要性</th><th>メンタルヘルス情報の欲求</th><th>メールリンク受信</th><th>リンク未クリックの理由</th><th>メールよりチャットの好み</th><th>フィードバック条件</th><th>推薦意向</th><th>継続使用希望</th><th>汎用性</th><th>スタンプ種類</th><th>嬉しいスタンプ</th><th>システム連携の容易さ</th><th>共有機能の利用希望</th><th>特定共有オプションの利用希望</th><th>Email</th></tr>";
+echo "<tr><th>check_times</th><th>frequency</th><th>check_times[]</th><th>more_record[]</th><th>sself_evaluation_improvement</th><th>self_recognition_change</th>><th>behavior_change_after_notification</th><th>notification_reflect_current_state</th><th>end_of_day_notification</th><th>behavior_observation_insights</th><th>actionable_changes</th><th>privacy_policy_understanding</th><th>data_handling_concerns</th><th>need_for_educational_content</th><th>mental_health_info_desire</th><th>
 mail_link_received</th><th>
 reason_for_not_clicking_link</th><th>
 preference_for_chat_over_mail</th><th>
 feedback_provision_condition</th><th>
 recommendation_likelihood</th><th>
 continued_usage_desire</th><th>
+additional_features</th><th>
 usability</th><th>
 improvement_suggestions</th><th>
-difficulty_reasons</th><th>
 integration_ease</th><th>
 desire_for_sharing_feature</th><th>
 desire_for_specific_sharing_option</th><th>
@@ -139,63 +141,31 @@ echo "</table>";
 // ファイルを閉じます
 fclose($file);
 
+$filePath = 'survey_responses.csv';
+$file = fopen($filePath, "r");
 
-// CSVファイルを開く
-$filePath = "survey_responses.csv";
-$file = fopen("survey_responses.csv", "r");
+// 各項目ごとに回答を集計するための多次元配列を用意
+// 例: $questionAnswers[質問][回答] = カウント数;
+$questionAnswers = [];
 
-// 回答のカウントを保持する配列
-$answerCounts = [
-    "はい" => 0,
-    "いいえ" => 0
-];
-
-// CSVファイルを1行ずつ読み込む
 while (($row = fgetcsv($file)) !== FALSE) {
-    // ここで$rowにはCSVの1行が配列として格納されています
-    // 例えば、回答が2列目にあると仮定すると$row[1]でアクセスできます
-    // 回答に応じてカウントを増やします
-    if (isset($answerCounts[$row[1]])) {
-        $answerCounts[$row[1]]++;
+    // 例として、3番目の列から質問の回答が始まると仮定
+    for ($i = 3; $i < count($row); $i++) {
+        // ここで、$iは質問のインデックス、$row[$i]はその質問に対する回答
+        if (!isset($questionAnswers[$i])) {
+            $questionAnswers[$i] = ['yes' => 0, 'no' => 0];
+        }
+        if ($row[$i] === 'yes') {
+            $questionAnswers[$i]['yes']++;
+        } elseif ($row[$i] === 'no') {
+            $questionAnswers[$i]['no']++;
+        }
     }
 }
-
-// ファイルを閉じる
 fclose($file);
-
-
-
-
 // JavaScriptで利用できるようにデータをJSON形式でエンコード
-$jsonData = json_encode($answerCounts);
-
-
-// Pythonスクリプトを実行し、出力を$chartOutputに格納
-$chartOutput = shell_exec('python data_analysis.py');
-
-// 出力をウェブページに表示
-echo $chartOutput;
-
-
-$file = fopen("survey_responses.csv", "r");
-$dataCounts = []; // 各分類のカウントを保持する連想配列
-
-// ファイルを1行ずつ読み込み
-while (($data = fgetcsv($file, 1000, ",")) !== FALSE) {
-    // 例えば$data[1]が分類データを含む列だとする
-    $category = $data[1]; // 分類名を取得
-    if (!isset($dataCounts[$category])) {
-        $dataCounts[$category] = 0;
-    }
-    $dataCounts[$category]++;
-}
-fclose($file);
-
-// JavaScriptで使用できるようにデータをJSON形式で出力する準備
-$jsonData = json_encode($dataCounts);
-echo "Hello World";
+$jsonData = json_encode($questionAnswers);
 ?>
-
 </body>
 </html>
 
