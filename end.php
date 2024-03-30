@@ -57,6 +57,39 @@
             }
         });
     </script>
+    <script>
+// PHPからJSONデータを受け取る
+var dataCounts = <?php echo $jsonData; ?>;
+
+// ラベルとデータ値を抽出
+var labels = Object.keys(dataCounts);
+var data = labels.map(label => dataCounts[label]);
+
+// Chart.jsで円グラフを描画
+var ctx = document.getElementById('myChart').getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'pie',
+    data: {
+        labels: labels,
+        datasets: [{
+            data: data,
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                // 色は各分類に合わせて追加
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                // 色は各分類に合わせて追加
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+    }
+});
+</script>
+
 </body>
     <?php
 // エラー表示を有効にします（開発中のみ推奨）
@@ -109,6 +142,27 @@ $chartOutput = shell_exec('python data_analysis.py');
 
 // 出力をウェブページに表示
 echo $chartOutput;
+
+
+$file = fopen("survey_responses.csv", "r");
+$dataCounts = []; // 各分類のカウントを保持する連想配列
+
+// ファイルを1行ずつ読み込み
+while (($data = fgetcsv($file, 1000, ",")) !== FALSE) {
+    // 例えば$data[1]が分類データを含む列だとする
+    $category = $data[1]; // 分類名を取得
+    if (!isset($dataCounts[$category])) {
+        $dataCounts[$category] = 0;
+    }
+    $dataCounts[$category]++;
+}
+
+fclose($file);
+
+// JavaScriptで使用できるようにデータをJSON形式で出力する準備
+$jsonData = json_encode($dataCounts);
+?>
+
 ?>
 
 
