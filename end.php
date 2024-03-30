@@ -37,7 +37,7 @@
         var myChart = new Chart(ctx, {
             type: 'pie',
             data: {
-                labels: ['はい', 'いいえ'],
+                labels: ['継続して利用したい', '改善したら利用したい'],
                 datasets: [{
                     label: 'アンケート結果',
                     data: [60, 40], // 例: はいが60%, いいえが40%
@@ -58,7 +58,7 @@
         });
     </script>
     <script>
-// PHPからJSONデータを受け取る
+// PHPから受け取ったデータを使用
 var dataCounts = <?php echo $jsonData; ?>;
 
 // ラベルとデータ値を抽出
@@ -75,11 +75,11 @@ var myChart = new Chart(ctx, {
             data: data,
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
-                // 色は各分類に合わせて追加
+                'rgba(54, 162, 235, 0.2)'
             ],
             borderColor: [
-                'rgba(255, 99, 132, 1)',
-                // 色は各分類に合わせて追加
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)'
             ],
             borderWidth: 1
         }]
@@ -90,8 +90,9 @@ var myChart = new Chart(ctx, {
 });
 </script>
 
+   
 </body>
-    <?php
+<?php
 // エラー表示を有効にします（開発中のみ推奨）
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
@@ -137,6 +138,38 @@ echo "</table>";
 
 // ファイルを閉じます
 fclose($file);
+
+
+// CSVファイルを開く
+$filePath = "survey_responses.csv";
+$file = fopen("survey_responses.csv", "r");
+
+// 回答のカウントを保持する配列
+$answerCounts = [
+    "はい" => 0,
+    "いいえ" => 0
+];
+
+// CSVファイルを1行ずつ読み込む
+while (($row = fgetcsv($file)) !== FALSE) {
+    // ここで$rowにはCSVの1行が配列として格納されています
+    // 例えば、回答が2列目にあると仮定すると$row[1]でアクセスできます
+    // 回答に応じてカウントを増やします
+    if (isset($answerCounts[$row[1]])) {
+        $answerCounts[$row[1]]++;
+    }
+}
+
+// ファイルを閉じる
+fclose($file);
+
+
+
+
+// JavaScriptで利用できるようにデータをJSON形式でエンコード
+$jsonData = json_encode($answerCounts);
+
+
 // Pythonスクリプトを実行し、出力を$chartOutputに格納
 $chartOutput = shell_exec('python data_analysis.py');
 
@@ -156,15 +189,12 @@ while (($data = fgetcsv($file, 1000, ",")) !== FALSE) {
     }
     $dataCounts[$category]++;
 }
-
 fclose($file);
 
 // JavaScriptで使用できるようにデータをJSON形式で出力する準備
 $jsonData = json_encode($dataCounts);
+echo "Hello World";
 ?>
-
-?>
-
 
 </body>
 </html>
