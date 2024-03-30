@@ -127,8 +127,6 @@ button[type="submit"]:hover {
         <option value="monthly">週に1,2回</option>
         <option value="rarely">ほとんど使用しない</option>
     </select>
-    <!-- <input type="text" name="frequency" required> -->
-
     <!-- 質問２ -->
     <!-- ラジオボタン -->
     <p>1日の回数上限がありましたが、それ以上に記録が残ったほうが良いか？</p>
